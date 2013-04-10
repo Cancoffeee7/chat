@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+  		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-		var socket = io.connect('http://localhost');
-		socket.on('news', function (data) {
-			console.log(data);
-			socket.emit('my other event', { my: 'data' });
+		var socket = io.connect();
+		var room = prompt('Input Room ', "room");
+		
+		socket.emit('join', room);
+		
+		socket.on('message', function(data){
+			console.log("get Message : " + data );
 		});
+		
+		
+		
 		</script>
 		<title>Fucking North Korea</title>
 	</head>
