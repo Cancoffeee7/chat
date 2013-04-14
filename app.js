@@ -22,12 +22,13 @@ io.sockets.on('connection', function (socket) {
     socket.join(data);
     socket.set('room', data);
     var date = new Date();
+    var strDate = date.getFullYear() + ":" + date.getMonth() + ":" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     console.log("Time : " + date.toLocaleString() );
     console.log("Session Id : " + socket.id);
 
     chatLog.save(
       { 
-        time : date.toLocaleString(),
+        time : strDate,
         id : socket.id,
         room : data
       }
@@ -42,4 +43,3 @@ io.sockets.on('connection', function (socket) {
   });
   
 });
-
