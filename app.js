@@ -1,6 +1,11 @@
 var app = require('express')()
-  , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+, server = require('http').createServer(app)
+, io = require('socket.io').listen(server);
+//, db = require('mongojs').connect('node', ['chatLog']);
+var mongojs = require('mongojs');
+
+var db = mongojs('node');
+var chatLog = db.collection('chatLog');
 
 server.listen(80);
 
@@ -16,6 +21,18 @@ io.sockets.on('connection', function (socket) {
   socket.on('join', function(data){
     socket.join(data);
     socket.set('room', data);
+    var date = new Date();
+    console.log("Time : " + date.toLocaleString() );
+    console.log("Session Id : " + socket.id);
+
+    chatLog.save(
+      { 
+        time : date.toLocaleString(),
+        id : socket.id,
+        room : data
+      }
+    );
+    
   });
   
   socket.on('message', function(data){
@@ -25,3 +42,4 @@ io.sockets.on('connection', function (socket) {
   });
   
 });
+
